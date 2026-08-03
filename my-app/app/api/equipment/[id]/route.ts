@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getCustomerById } from "../services"
+import { getEquipmentById } from "../services"
 
 type Params = {
   params: Promise<{ id: string }>;
@@ -7,10 +7,10 @@ type Params = {
 
 export async function GET(_request: Request, { params }: Params) {
   const { id } = await params;
-  const customer = await getCustomerById(id);
+  const customer = await getEquipmentById(id);
 
   if (!customer) {
-    return NextResponse.json({ error: "Customer not found" }, { status: 404 });
+    return NextResponse.json({ error: "Equipment not found" }, { status: 404 });
   }
 
   return NextResponse.json(customer);
