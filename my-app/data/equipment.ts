@@ -1,4 +1,4 @@
-[
+const equipment = [
   {
     "id": "EQ001",
     "name": "Carrier Comfort 16 Central AC",
@@ -240,3 +240,5 @@
     "baseCost": 1350
   }
 ]
+
+export default equipment;

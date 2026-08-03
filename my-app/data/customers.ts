@@ -1,4 +1,4 @@
-[
+const customers = [
   {
     "id": "CUST001",
     "name": "Margaret Thompson",
@@ -106,3 +106,5 @@
     "lastServiceDate": "2025-12-01"
   }
 ]
+
+export default customers;

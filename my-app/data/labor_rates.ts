@@ -1,4 +1,4 @@
-[
+const labor_rates = [
   {
     "jobType": "diagnostic",
     "level": "standard",
@@ -99,3 +99,5 @@
     }
   }
 ]
+
+export default labor_rates;
