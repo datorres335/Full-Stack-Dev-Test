@@ -1,8 +1,17 @@
 import { prisma } from "@/lib/prisma";
 
-export function getEquipment() {
+export function getEquipment(name?: string) {
   return prisma.equipment.findMany({
-    orderBy: [{ category: "asc" }, { name: "asc" }],
+    where: {
+      name: name
+        ? {
+            contains: name,
+          }
+        : undefined,
+    },
+    orderBy: {
+      name: "asc",
+    },
   });
 }
 

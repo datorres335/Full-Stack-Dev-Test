@@ -1,8 +1,17 @@
 import { prisma } from "@/lib/prisma";
 
-export function getCustomers() {
+export function getCustomers(name?: string) {
   return prisma.customer.findMany({
-    orderBy: { name: "asc" },
+    where: {
+      name: name
+        ? {
+            contains: name,
+          }
+        : undefined,
+    },
+    orderBy: {
+      name: "asc",
+    },
   });
 }
 
