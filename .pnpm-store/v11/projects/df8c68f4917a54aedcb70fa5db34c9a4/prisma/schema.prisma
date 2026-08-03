@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Customer {
+  id              String    @id
+  name            String
+  address         String
+  propertyType    String
+  squareFootage   Int
+  systemType      String
+  systemAge       Int?
+  phone           String?
+  lastServiceDate DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@map("customers")
+}
+
+model Equipment {
+  id          String   @id
+  name        String
+  category    String
+  brand       String
+  modelNumber String
+  baseCost    Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("equipment")
+}
+
+model LaborRate {
+  id                Int      @id @default(autoincrement())
+  jobType           String
+  level             String
+  hourlyRate        Int
+  estimatedHoursMin Float
+  estimatedHoursMax Float
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@unique([jobType, level])
+  @@map("labor_rates")
+}
