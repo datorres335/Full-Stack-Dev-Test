@@ -1,21 +1,10 @@
 "use client";
 
 import { useEffect, useId, useMemo, useRef, useState } from "react";
-
-type CustomerOption = {
-  id: string;
-  name: string;
-  address: string;
-  phone: string | null;
-  propertyType: string;
-  squareFootage: number;
-  systemType: string;
-  systemAge: number | null;
-  lastServiceDate: string | null;
-};
+import { Customer } from "@/lib/types";
 
 type CustomerSelectorProps = {
-  onSelect?: (customer: CustomerOption) => void;
+  onSelect?: (customer: Customer) => void;
   placeholder?: string;
 };
 
@@ -26,9 +15,9 @@ export function CustomerSelector({
   const inputId = useId();
   const listboxId = useId();
   const [query, setQuery] = useState("");
-  const [customers, setCustomers] = useState<CustomerOption[]>([]);
+  const [customers, setCustomers] = useState<Customer[]>([]);
   const [selectedCustomer, setSelectedCustomer] =
-    useState<CustomerOption | null>(null);
+    useState<Customer | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -60,7 +49,7 @@ export function CustomerSelector({
           throw new Error("Could not load customers");
         }
 
-        const data = (await response.json()) as CustomerOption[];
+        const data = (await response.json()) as Customer[];
         setCustomers(data);
         setActiveIndex(data.length ? 0 : -1);
       } catch (fetchError) {
@@ -93,7 +82,7 @@ export function CustomerSelector({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  function selectCustomer(customer: CustomerOption) {
+  function selectCustomer(customer: Customer) {
     setSelectedCustomer(customer);
     setQuery(customer.name);
     setIsOpen(false);

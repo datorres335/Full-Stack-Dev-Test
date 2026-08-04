@@ -2,22 +2,12 @@
 
 import { useState } from "react";
 import { CustomerSelector } from "@/components/customer-selector";
-
-type SelectedCustomer = {
-  id: string;
-  name: string;
-  address: string;
-  phone: string | null;
-  propertyType: string;
-  squareFootage: number;
-  systemType: string;
-  systemAge: number | null;
-  lastServiceDate: string | null;
-};
+import { CustomerSummary } from "@/components/customer-summary";
+import { Customer } from "@/lib/types";
 
 export default function Home() {
   const [selectedCustomer, setSelectedCustomer] =
-    useState<SelectedCustomer | null>(null);
+    useState<Customer | null>(null);
 
   return (
     <main className="min-h-screen bg-zinc-50 px-6 py-10 text-zinc-950 dark:bg-black dark:text-zinc-50">
@@ -37,42 +27,7 @@ export default function Home() {
           <h2 className="text-lg font-semibold">Selected customer</h2>
 
           {selectedCustomer ? (
-            <dl className="mt-4 grid gap-4 text-sm sm:grid-cols-2">
-              <div>
-                <dt className="text-zinc-500">Name</dt>
-                <dd className="font-medium">{selectedCustomer.name}</dd>
-              </div>
-              <div>
-                <dt className="text-zinc-500">Customer ID</dt>
-                <dd className="font-medium">{selectedCustomer.id}</dd>
-              </div>
-              <div className="sm:col-span-2">
-                <dt className="text-zinc-500">Address</dt>
-                <dd className="font-medium">{selectedCustomer.address}</dd>
-              </div>
-              <div>
-                <dt className="text-zinc-500">Property type</dt>
-                <dd className="font-medium capitalize">
-                  {selectedCustomer.propertyType}
-                </dd>
-              </div>
-              <div>
-                <dt className="text-zinc-500">System</dt>
-                <dd className="font-medium">{selectedCustomer.systemType}</dd>
-              </div>
-              <div>
-                <dt className="text-zinc-500">Square footage</dt>
-                <dd className="font-medium">
-                  {selectedCustomer.squareFootage.toLocaleString()}
-                </dd>
-              </div>
-              <div>
-                <dt className="text-zinc-500">Phone</dt>
-                <dd className="font-medium">
-                  {selectedCustomer.phone ?? "No phone on file"}
-                </dd>
-              </div>
-            </dl>
+            <CustomerSummary selectedCustomer={selectedCustomer} />
           ) : (
             <p className="mt-3 text-sm text-zinc-500">
               No customer selected yet.
