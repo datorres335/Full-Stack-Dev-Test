@@ -4,7 +4,7 @@ import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { Customer } from "@/lib/types";
 
 type CustomerSelectorProps = {
-  onSelect?: (customer: Customer) => void;
+  onSelect?: (customer: Customer | null) => void;
   placeholder?: string;
 };
 
@@ -115,6 +115,7 @@ export function CustomerSelector({
           setQuery(event.target.value);
           setSelectedCustomer(null);
           setIsOpen(true);
+          onSelect?.(null);
         }}
         onFocus={() => setIsOpen(true)}
         onKeyDown={(event) => {

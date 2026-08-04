@@ -4,7 +4,7 @@ import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { Equipment } from "@/lib/types";
 
 type EquipmentSelectorProps = {
-  onSelect?: (equipment: Equipment) => void;
+  onSelect?: (equipment: Equipment | null) => void;
   placeholder?: string;
 };
 
@@ -115,6 +115,7 @@ export function EquipmentSelector({
           setQuery(event.target.value);
           setSelectedEquipment(null);
           setIsOpen(true);
+          onSelect?.(null);
         }}
         onFocus={() => setIsOpen(true)}
         onKeyDown={(event) => {
