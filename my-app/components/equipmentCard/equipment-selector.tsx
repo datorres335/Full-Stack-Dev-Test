@@ -1,65 +1,66 @@
 "use client";
 
 import { useEffect, useId, useMemo, useRef, useState } from "react";
-import { Customer } from "@/lib/types";
+import { Equipment } from "@/lib/types";
 
-type CustomerSelectorProps = {
-  onSelect?: (customer: Customer) => void;
+type EquipmentSelectorProps = {
+  onSelect?: (equipment: Equipment) => void;
   placeholder?: string;
 };
 
-export function CustomerSelector({
+export function EquipmentSelector({
   onSelect,
-  placeholder = "Search customers",
-}: CustomerSelectorProps) {
+  placeholder = "Search equipment",
+}: EquipmentSelectorProps) {
   const inputId = useId();
   const listboxId = useId();
   const [query, setQuery] = useState("");
-  const [customers, setCustomers] = useState<Customer[]>([]);
-  const [selectedCustomer, setSelectedCustomer] =
-    useState<Customer | null>(null);
+  const [allEquipment, setAllEquipment] = useState<Equipment[]>([]);
+  const [selectedEquipment, setSelectedEquipment] =
+    useState<Equipment | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [activeIndex, setActiveIndex] = useState(-1);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null); // to check if a user's mouse click happened outside of this specific HTML element so it can automatically close the dropdown dropdown box (setIsOpen(false)).
+    // HTMLDivElement is a built-in TypeScript utility type. It represents the exact data structure and properties of a native HTML <div> element in the browser DOM.
 
-  const activeCustomer = useMemo(
-    () => customers[activeIndex],
-    [activeIndex, customers],
+  const activeEquipment = useMemo(
+    () => allEquipment[activeIndex],
+    [activeIndex, allEquipment],
   );
 
   useEffect(() => {
-    const controller = new AbortController();
+    const controller = new AbortController(); //An AbortController is a native web browser API used to cancel asynchronous requests (like fetch) before they naturally finish completing.
     const search = query.trim();
 
-    const timeout = window.setTimeout(async () => {
+    const timeout = window.setTimeout(async () => { //  "window" represents the browser's window containing the DOM document. It is a globally accessible object provided by the web browser environment, not by JavaScript itself or React.
       try {
         setIsLoading(true);
         setError(null);
 
         const params = search
-          ? `?name=${encodeURIComponent(search)}`
+          ? `?name=${encodeURIComponent(search)}` // encodeURIComponent() is a global JavaScript function that converts strings into a safe format that can be embedded directly inside a URL query string.
           : "";
-        const response = await fetch(`/api/customers${params}`, {
-          signal: controller.signal,
+        const response = await fetch(`/api/equipment${params}`, {
+          signal: controller.signal, // If a user types "Dav" quickly, the component fires a search request for "D", then "Da", then "Dav". Without an abort controller, those 3 separate API requests would fight to finish, wasting network bandwidth and potentially displaying the wrong search results if they finish out of order. Here, controller.abort() kills the previous API fetch instantly the millisecond the user types a new character.
         });
 
         if (!response.ok) {
-          throw new Error("Could not load customers");
+          throw new Error("Could not load equipment");
         }
 
-        const data = (await response.json()) as Customer[];
-        setCustomers(data);
+        const data = (await response.json()) as Equipment[];
+        setAllEquipment(data);
         setActiveIndex(data.length ? 0 : -1);
       } catch (fetchError) {
         if (fetchError instanceof DOMException && fetchError.name === "AbortError") {
           return;
         }
 
-        setCustomers([]);
+        setAllEquipment([]);
         setActiveIndex(-1);
-        setError("Could not load customers");
+        setError("Could not load equipment");
       } finally {
         setIsLoading(false);
       }
@@ -82,11 +83,11 @@ export function CustomerSelector({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  function selectCustomer(customer: Customer) {
-    setSelectedCustomer(customer);
-    setQuery(customer.name);
+  function selectEquipment(equipment: Equipment) {
+    setSelectedEquipment(equipment);
+    setQuery(equipment.name);
     setIsOpen(false);
-    onSelect?.(customer);
+    onSelect?.(equipment);
   }
 
   return (
@@ -95,7 +96,7 @@ export function CustomerSelector({
         htmlFor={inputId}
         className="mb-2 block text-sm font-medium text-zinc-800 dark:text-zinc-100"
       >
-        Customer
+        Equipment
       </label>
       <input
         id={inputId}
@@ -107,12 +108,12 @@ export function CustomerSelector({
         aria-controls={listboxId}
         aria-expanded={isOpen}
         aria-activedescendant={
-          activeCustomer ? `${listboxId}-${activeCustomer.id}` : undefined
+          activeEquipment ? `${listboxId}-${activeEquipment.id}` : undefined
         }
         className="h-11 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-950 outline-none transition focus:border-zinc-700 focus:ring-2 focus:ring-zinc-200 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-50 dark:focus:border-zinc-300 dark:focus:ring-zinc-800"
         onChange={(event) => {
           setQuery(event.target.value);
-          setSelectedCustomer(null);
+          setSelectedEquipment(null);
           setIsOpen(true);
         }}
         onFocus={() => setIsOpen(true)}
@@ -125,22 +126,22 @@ export function CustomerSelector({
           if (event.key === "ArrowDown") {
             event.preventDefault();
             setActiveIndex((index) =>
-              customers.length ? (index + 1) % customers.length : -1,
+              allEquipment.length ? (index + 1) % allEquipment.length : -1,
             );
           }
 
           if (event.key === "ArrowUp") {
             event.preventDefault();
             setActiveIndex((index) =>
-              customers.length
-                ? (index - 1 + customers.length) % customers.length
+              allEquipment.length
+                ? (index - 1 + allEquipment.length) % allEquipment.length
                 : -1,
             );
           }
 
-          if (event.key === "Enter" && activeCustomer) {
+          if (event.key === "Enter" && activeEquipment) {
             event.preventDefault();
-            selectCustomer(activeCustomer);
+            selectEquipment(activeEquipment);
           }
 
           if (event.key === "Escape") {
@@ -159,31 +160,31 @@ export function CustomerSelector({
             <div className="px-3 py-2 text-sm text-zinc-500">Loading...</div>
           ) : error ? (
             <div className="px-3 py-2 text-sm text-red-600">{error}</div>
-          ) : customers.length ? (
-            customers.map((customer, index) => (
+          ) : allEquipment.length ? (
+            allEquipment.map((equipment, index) => (
               <button
-                id={`${listboxId}-${customer.id}`}
-                key={customer.id}
+                id={`${listboxId}-${equipment.id}`}
+                key={equipment.id}
                 type="button"
                 role="option"
-                aria-selected={selectedCustomer?.id === customer.id}
+                aria-selected={selectedEquipment?.id === equipment.id}
                 className={`grid w-full gap-1 px-3 py-2 text-left text-sm transition ${
                   index === activeIndex
                     ? "bg-zinc-100 text-zinc-950 dark:bg-zinc-800 dark:text-zinc-50"
                     : "text-zinc-800 hover:bg-zinc-50 dark:text-zinc-100 dark:hover:bg-zinc-900"
                 }`}
                 onMouseEnter={() => setActiveIndex(index)}
-                onClick={() => selectCustomer(customer)}
+                onClick={() => selectEquipment(equipment)}
               >
-                <span className="font-medium">{customer.name}</span>
+                <span className="font-medium">{equipment.name}</span>
                 <span className="truncate text-xs text-zinc-500">
-                  {customer.address}
+                  {equipment.category}
                 </span>
               </button>
             ))
           ) : (
             <div className="px-3 py-2 text-sm text-zinc-500">
-              No customers found
+              No equipment found
             </div>
           )}
         </div>
