@@ -1,12 +1,16 @@
 import { prisma } from "@/lib/prisma";
 
-export function getLaborRate(jobType: string, level: string) {
-  return prisma.laborRate.findUnique({
+export function getLaborRate(jobType?: string) {
+  return prisma.laborRate.findMany({
     where: {
-      jobType_level: {
-        jobType,
-        level,
-      },
+      jobType: jobType
+        ? {
+            contains: jobType,
+          }
+        : undefined,
+    },
+    orderBy: {
+      jobType: "asc",
     },
   });
 }
