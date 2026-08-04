@@ -9,14 +9,12 @@ export default function CustomerCard() {
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
 
   return (
-    <section className="mx-auto flex w-full max-w-3xl flex-col gap-8">
-      <h1 className="text-3xl font-semibold tracking-tight">
-        Select a customer
-      </h1>
+    <article className="flex w-full flex-col gap-6 rounded-md border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-950">
+      <h1 className="text-2xl font-semibold tracking-tight">Select a customer</h1>
 
       <CustomerSelector onSelect={setSelectedCustomer} />
 
-      <div className="rounded-md border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-950">
+      <div>
         <h2 className="text-lg font-semibold">Selected customer</h2>
 
         {selectedCustomer ? (
@@ -27,6 +25,6 @@ export default function CustomerCard() {
           </p>
         )}
       </div>
-    </section>
+    </article>
   );
 }
