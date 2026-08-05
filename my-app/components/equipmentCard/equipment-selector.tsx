@@ -16,8 +16,7 @@ export function EquipmentSelector({
   const listboxId = useId();
   const [query, setQuery] = useState("");
   const [allEquipment, setAllEquipment] = useState<Equipment[]>([]);
-  const [selectedEquipment, setSelectedEquipment] =
-    useState<Equipment | null>(null);
+  const [selectedEquipment, setSelectedEquipment] = useState<Equipment | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
