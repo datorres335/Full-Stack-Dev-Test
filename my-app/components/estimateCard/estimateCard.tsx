@@ -1,4 +1,5 @@
 import { Customer, Equipment, LaborEstimate } from "@/lib/types";
+import { formatCurrency } from "@/lib/formatCurrency";
 
 type EstimateCardProps = {
   customer: Customer | null;
@@ -55,18 +56,18 @@ export default function EstimateCard({
         </div>
         <div>
           <dt className="text-zinc-500">Labor total</dt>
-          <dd className="font-medium">${laborTotal.toLocaleString()}</dd>
+          <dd className="font-medium">{formatCurrency(laborTotal)}</dd>
         </div>
         <div>
           <dt className="text-zinc-500">Equipment base cost</dt>
-          <dd className="font-medium">${equipmentTotal.toLocaleString()}</dd>
+          <dd className="font-medium">{formatCurrency(equipmentTotal)}</dd>
         </div>
       </dl>
 
       <div className="border-t border-zinc-200 pt-5 dark:border-zinc-800">
         <p className="text-sm text-zinc-500">Final estimated total</p>
         <p className="mt-1 text-3xl font-semibold">
-          ${estimatedTotal.toLocaleString()}
+          {formatCurrency(estimatedTotal)}
         </p>
       </div>
     </article>

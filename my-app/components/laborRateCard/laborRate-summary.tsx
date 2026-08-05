@@ -1,6 +1,7 @@
 "use client";
 
 import { LaborRate } from "@/lib/types";
+import { formatCurrency } from "@/lib/formatCurrency";
 
 type LaborRateSummaryProps = {
   selectedLaborRate: LaborRate;
@@ -20,7 +21,7 @@ export function LaborRateSummary({
       <div>
         <p className="text-zinc-500">Hourly rate</p>
         <p className="font-medium">
-          ${selectedLaborRate.hourlyRate.toLocaleString()}/hr
+          {formatCurrency(selectedLaborRate.hourlyRate)}/hr
         </p>
       </div>
       <div>
@@ -53,7 +54,7 @@ export function LaborRateSummary({
       <div className="sm:col-span-2">
         <p className="text-zinc-500">Estimated labor total</p>
         <p className="text-lg font-semibold">
-          ${totalLaborCost.toLocaleString()}
+          {formatCurrency(totalLaborCost)}
         </p>
       </div>
     </div>
