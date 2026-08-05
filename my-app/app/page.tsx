@@ -1,5 +1,6 @@
 import CustomerCard from "@/components/customerCard/customerCard"
 import EquipmentCard from "@/components/equipmentCard/equipmentCard";
+import LaborRateCard from "@/components/laborRateCard/laborRateCard";
 
 export default function Home() {
   return (
@@ -12,7 +13,7 @@ export default function Home() {
         </div>
 
         <CustomerCard />
-        {/** Labor Rate Card goes here*/}
+        <LaborRateCard />
         <EquipmentCard />
 
       </section>

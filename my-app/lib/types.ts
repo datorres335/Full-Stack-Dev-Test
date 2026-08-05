@@ -20,11 +20,10 @@ export interface Customer {
 }
 
 export interface LaborRate {
+  id: number;
   jobType: string;
   level: string;
   hourlyRate: number;
-  estimatedHours: {
-    min: number;
-    max: number;
-  };
+  estimatedHoursMin: number;
+  estimatedHoursMax: number;
 }
