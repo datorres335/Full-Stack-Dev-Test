@@ -27,3 +27,9 @@ export interface LaborRate {
   estimatedHoursMin: number;
   estimatedHoursMax: number;
 }
+
+export interface LaborEstimate {
+  laborRate: LaborRate;
+  estimatedHours: number;
+  laborTotal: number;
+}

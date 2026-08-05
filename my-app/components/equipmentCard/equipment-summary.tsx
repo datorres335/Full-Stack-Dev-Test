@@ -31,8 +31,8 @@ export function EquipmentSummary ({ selectedEquipment }: EquipmentSummaryProps) 
       </div>
       <div>
         <dt className="text-zinc-500">Base Cost</dt>
-        <dd className="font-medium">
-          {selectedEquipment.baseCost.toLocaleString()}
+        <dd className="text-lg font-semibold">
+          ${selectedEquipment.baseCost.toLocaleString()}
         </dd>
       </div>
     </dl>

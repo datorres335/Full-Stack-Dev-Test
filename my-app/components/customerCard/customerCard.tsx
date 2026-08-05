@@ -5,14 +5,23 @@ import { CustomerSelector } from "@/components/customerCard/customer-selector";
 import { CustomerSummary } from "@/components/customerCard/customer-summary";
 import { Customer } from "@/lib/types";
 
-export default function CustomerCard() {
+type CustomerCardProps = {
+  onCustomerChange?: (customer: Customer | null) => void;
+};
+
+export default function CustomerCard({ onCustomerChange }: CustomerCardProps) {
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
+
+  function handleCustomerSelect(customer: Customer | null) {
+    setSelectedCustomer(customer);
+    onCustomerChange?.(customer);
+  }
 
   return (
     <article className="flex w-full flex-col gap-6 rounded-md border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-950">
       <h1 className="text-2xl font-semibold tracking-tight">Select a customer</h1>
 
-      <CustomerSelector onSelect={setSelectedCustomer} />
+      <CustomerSelector onSelect={handleCustomerSelect} />
 
       <div>
         <h2 className="text-lg font-semibold">Selected customer</h2>

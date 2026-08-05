@@ -1,12 +1,18 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { LaborRate } from "@/lib/types";
+import { LaborEstimate, LaborRate } from "@/lib/types";
 import { JobTypeSelector } from "@/components/laborRateCard/jobType-selector";
 import { LaborRateSummary } from "@/components/laborRateCard/laborRate-summary";
 import { LevelSelector } from "@/components/laborRateCard/level-selector";
 
-export default function LaborRateCard() {
+type LaborRateCardProps = {
+  onLaborEstimateChange?: (estimate: LaborEstimate | null) => void;
+};
+
+export default function LaborRateCard({
+  onLaborEstimateChange,
+}: LaborRateCardProps) {
   const [laborRates, setLaborRates] = useState<LaborRate[]>([]);
   const [selectedJobType, setSelectedJobType] = useState("");
   const [selectedLevel, setSelectedLevel] = useState("");
@@ -70,6 +76,19 @@ export default function LaborRateCard() {
       ) ?? null,
     [laborRates, selectedJobType, selectedLevel],
   );
+
+  useEffect(() => {
+    if (!selectedLaborRate) {
+      onLaborEstimateChange?.(null);
+      return;
+    }
+
+    onLaborEstimateChange?.({
+      laborRate: selectedLaborRate,
+      estimatedHours,
+      laborTotal: selectedLaborRate.hourlyRate * estimatedHours,
+    });
+  }, [estimatedHours, onLaborEstimateChange, selectedLaborRate]);
 
   function handleJobTypeSelect(jobType: string) {
     setSelectedJobType(jobType);
