@@ -6,6 +6,7 @@ export function getCustomers(name?: string) {
       name: name
         ? {
             contains: name,
+            mode: "insensitive",
           }
         : undefined,
     },
